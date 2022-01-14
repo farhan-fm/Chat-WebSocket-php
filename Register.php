@@ -9,7 +9,7 @@ $success_message = '';
 if (isset($_POST["Register"])) {
     session_start();
     if (isset($_SESSION['user_data'])) {
-        header('location:chatroom.php');
+        header('location:ChatRoom.php');
     }
     require_once('database/ChatUser.php');
     $user_object = new ChatUser;
