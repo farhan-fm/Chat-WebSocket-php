@@ -8,6 +8,7 @@ $success_message = '';
 
 if (isset($_POST["Register"])) {
     session_start();
+
     if (isset($_SESSION['user_data'])) {
         header('location:ChatRoom.php');
     }
@@ -23,24 +24,20 @@ if (isset($_POST["Register"])) {
 
     $user_data = $user_object->get_user_data_by_email();
 
-    if(is_array($user_data) && count($user_data) > 0)
-    {
+    if (is_array($user_data) && count($user_data) > 0) {
         $error = 'This Email Already Register';
-        header('location:login.php');
-    }
-    else
-    {
-        if($user_object->save_data())
-        {
+
+    } else {
+        if ($user_object->save_data()) {
+
             header('location:login.php');
-        }
-        else
-        {
+
+        } else {
+
             $error = 'Something went wrong try again';
+
         }
     }
-
-
 }
 
 ?>

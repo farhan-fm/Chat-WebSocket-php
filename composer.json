@@ -1,12 +1,12 @@
 {
-	"autoload": {
-        "psr-4": {
-            "MyApp\\": "src"
-        }
-    },
-    
-    "require": {
-        "phpmailer/phpmailer": "^6.2",
-        "cboden/ratchet": "v0.4"
+  "autoload": {
+    "psr-4": {
+      "MyApp\\": "src"
     }
+  },
+  "require": {
+    "phpmailer/phpmailer": "^6.2",
+    "cboden/ratchet": "v0.4",
+    "ext-gd": "*"
+  }
 }
