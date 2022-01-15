@@ -98,7 +98,8 @@ class ChatUser
 
     function make_avatar($character)
     {
-        $path = "images/" . time() . ".png";
+        $character =strtolower($character);
+        $path = "images/" . $character . ".png";
         $image = imagecreate(200, 200);
         $red = rand(0, 255);
         $green = rand(0, 255);
@@ -113,6 +114,40 @@ class ChatUser
         imagedestroy($image);
         return $path;
     }
+
+    function update_data()
+    {
+        $query = "
+		UPDATE chat_user_table 
+		SET user_name = :user_name, 
+		user_email = :user_email, 
+		user_password = :user_password, 
+		user_profile = :user_profile  
+		WHERE user_id = :user_id
+		";
+
+        $statement = $this->connect->prepare($query);
+
+        $statement->bindParam(':user_name', $this->user_name);
+
+        $statement->bindParam(':user_email', $this->user_email);
+
+        $statement->bindParam(':user_password', $this->user_password);
+
+        $statement->bindParam(':user_profile', $this->user_profile);
+
+        $statement->bindParam(':user_id', $this->user_id);
+
+        if($statement->execute())
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 
     function get_user_data_by_email()
     {
@@ -223,4 +258,20 @@ class ChatUser
         return $data;
     }
 
+    function get_user_all_data_with_status_count()
+    {
+        $query = "
+		SELECT user_id, user_name, user_profile, user_login_status, (SELECT COUNT(*) FROM chat_message WHERE to_user_id = :user_id AND from_user_id = chat_user_table.user_id AND status = 'No') AS count_status FROM chat_user_table
+		";
+
+        $statement = $this->connect->prepare($query);
+
+        $statement->bindParam(':user_id', $this->user_id);
+
+        $statement->execute();
+
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        return $data;
+    }
 }

@@ -21,6 +21,7 @@ if (isset($_POST["Register"])) {
     $user_object->setUserPassword($_POST['user_password']);
     $user_object->setUserProfile($user_object->make_avatar(strtoupper($_POST['user_name'][0])));
     $user_object->setUserCreatedOn(date('Y-m-d H:i:s'));
+    $user_object->setUserLoginStatus("logut");
 
     $user_data = $user_object->get_user_data_by_email();
 
@@ -30,7 +31,7 @@ if (isset($_POST["Register"])) {
     } else {
         if ($user_object->save_data()) {
 
-            header('location:login.php');
+            header('location:index.php');
 
         } else {
 

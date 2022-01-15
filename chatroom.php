@@ -82,7 +82,7 @@ $user_data = $user_object->get_user_all_data();
 <body>
 	<div class="container">
 		<br />
-        <h3 class="text-center">Realtime One to One Chat App using Ratchet WebSockets with PHP Mysql - Online Offline Status - 8</h3>
+        <h3 class="text-center">ChitChat Application WebSocket With php</h3>
         <br />
 		<div class="row">
 			
