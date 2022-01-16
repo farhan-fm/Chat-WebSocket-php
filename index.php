@@ -1,147 +1,85 @@
-<?php
-session_start();
-
-$error = '';
-
-if(isset($_SESSION['user_data']))
-{
-    header('location:chatroom.php');
-}
-
-if(isset($_POST['login']))
-{
-    require_once('database/ChatUser.php');
-
-    $user_object = new ChatUser;
-
-    $user_object->setUserEmail($_POST['user_email']);
-
-    $user_data = $user_object->get_user_data_by_email();
-
-    if(is_array($user_data) && count($user_data) > 0)
-    {
-            if($user_data['user_password'] == $_POST['user_password'])
-            {
-                $user_object->setUserId($user_data['user_id']);
-
-                $user_object->setUserLoginStatus('Login');
-
-                if($user_object->update_user_login_data())
-                {
-                    $_SESSION['user_data'][$user_data['user_id']] = [
-                        'id'    =>  $user_data['user_id'],
-                        'name'  =>  $user_data['user_name'],
-                        'profile'   =>  $user_data['user_profile'],
-                    ];
-
-                    header('location:chatroom.php');
-
-                }
-            }
-            else
-            {
-                $error = 'Wrong Password';
-            }
-    }
-    else
-    {
-        $error = 'Wrong Email Address';
-    }
-}
-
-?>
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
+    <meta charset="UTF-8">
+    <title>WebSocket Chat Application</title>
+    <link rel="stylesheet" href="css/bootstrap.css" media="screen" title="no title" charset="UTF-8">
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
-    <title>ChitChat Application</title>
-
-    <!-- Bootstrap core CSS -->
-    <link href="vendor-front/bootstrap/bootstrap.min.css" rel="stylesheet">
-
-    <link href="vendor-front/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-
-    <link rel="stylesheet" type="text/css" href="vendor-front/parsley/parsley.css"/>
-
-    <!-- Bootstrap core JavaScript -->
-    <script src="vendor-front/jquery/jquery.min.js"></script>
-    <script src="vendor-front/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="vendor-front/jquery-easing/jquery.easing.min.js"></script>
-
-    <script type="text/javascript" src="vendor-front/parsley/dist/parsley.min.js"></script>
 </head>
-
 <body>
-
-
-
 <div class="container">
-    <br />
-    <br />
-    <h1 class="text-center">Chat Application Login</h1>
-    <div class="row justify-content-md-center mt-5">
+    <div class="row">
+        <div class="col-md-push-2 col-md-8">
+            <h2>php Chat Application</h2>
+            <h3>Messages</h3>
+            <ul class="messages-list">
 
-        <div class="col-md-4">
-            <?php
-            if(isset($_SESSION['success_message']))
-            {
-                echo '
-                    <div class="alert alert-success">
-                    '.$_SESSION["success_message"] .'
-                    </div>
-                    ';
-                unset($_SESSION['success_message']);
-            }
+            </ul>
+            <from class="chatForm" action="index.html" method="post">
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea type="button" id="message" name="message" class="form-control" value="">
 
-            if($error != '')
-            {
-                echo '
-                    <div class="alert alert-danger">
-                    '.$error.'
-                    </div>
-                    ';
-            }
-            ?>
-            <div class="card">
-                <div class="card-header">Login</div>
-                <div class="card-body">
-                    <form method="post" id="login_form">
-                        <div class="form-group">
-                            <label>Enter Your Email Address</label>
-                            <input type="text" name="user_email" id="user_email"  class="form-control" data-parsley-type="email" required />
-                        </div>
-                        <div class="form-group">
-                            <label>Enter Your Password</label>
-                            <input type="password" name="user_password" id="user_password" class="form-control" required />
-                        </div>
-                        <div class="form-group text-center">
-                            <input type="submit" name="login" id="login" class="btn btn-primary" value="Login" />
-                        </div>
-                    </form>
+                    </textarea>
                 </div>
-            </div>
+
+                <button onclick="send()" type="submit" name="button" class="btn btn-primary pull-right">Send</button>
+
+                <br/>
+                <br/>
+                <br/>
+                <button onclick="privateChat()" type="button" name="button" class="btn btn-primary pull-right">Private Chat</button>
+
+            </from>
         </div>
     </div>
+
 </div>
 
 </body>
 
-</html>
+<script src="js/jquery.js"></script>
+<script src="js/jquery.cookie.js"></script>
+<!--<script src="js/main.js"></script>-->
 
 <script>
+    var conn = new WebSocket("ws://localhost:8080");
+    conn.onopen = function (e) {
+        console.log("Connection established!");
 
-    $(document).ready(function(){
+        //conn.send("message test from a browser clinet");
+        // $.ajax({
+        //     url: 'http://localhost:8012/chat/load_history.php',
+        //     dataType: 'json',
+        //     success: function (data) {
+        //         $.each(data, function () {
+        //             messageList.prepend('<li>' + this.text + '</li>')
+        //         })
+        //     }
+        // })
 
-        $('#login_form').parsley();
 
-    });
+    };
+    conn.onmessage = function (e) {
+        console.log(e.data);
+        messageList.prepend('<li>' + e.data + '</li>')
+    };
+
+    var chatForm = $(".chatForm"),
+        messageInputField = chatForm.find("#message"),
+        messageList = $(".messages-list");
+
+    function send() {
+        var message = messageInputField.val();
+        conn.send(message);
+        messageList.prepend('<li>' + message + '</li>');
+    }
+
+    function privateChat() {
+        window.open("http://localhost:8012/chat/login.php", "_blank");
+    }
 
 </script>
+
+</html>
+

@@ -2,11 +2,15 @@
   "autoload": {
     "psr-4": {
       "MyApp\\": "src"
-    }
+    },
+    "files": [
+      "src/setup_eloquent.php"
+    ]
   },
   "require": {
-    "phpmailer/phpmailer": "^6.2",
-    "cboden/ratchet": "v0.4",
-    "ext-gd": "*"
+    "cboden/ratchet": "^0.4.4",
+    "ext-gd": "*",
+    "illuminate/database": "^8.79",
+    "illuminate/events": "^8.79"
   }
 }

@@ -9,9 +9,9 @@ if(!isset($_SESSION['user_data']))
 	header('location:index.php');
 }
 
-require('database/ChatUser.php');
+require('databasee/ChatUser.php');
 
-require('database/ChatRoom.php');
+
 
 ?>
 
@@ -101,7 +101,6 @@ require('database/ChatRoom.php');
 				<div class="mt-3 mb-3 text-center">
 					<img src="<?php echo $value['profile']; ?>" class="img-fluid rounded-circle img-thumbnail" width="150" />
 					<h3 class="mt-2"><?php echo $value['name']; ?></h3>
-					<a href="profile.php" class="btn btn-secondary mt-2 mb-2">Edit</a>
 					<input type="button" class="btn btn-primary mt-2 mb-2" id="logout" name="logout" value="Logout" />
 				</div>
 				<?php
@@ -159,7 +158,7 @@ require('database/ChatRoom.php');
 			
 			<div class="col-lg-9 col-md-8 col-sm-7">
 				<br />
-		        <h3 class="text-center">Realtime One to One Chat App using Ratchet WebSockets with PHP Mysql - Online Offline Status - 8</h3>
+		        <h3 class="text-center">private chat</h3>
 		        <hr />
 		        <br />
 		        <div id="chat_area"></div>

@@ -550,7 +550,7 @@ communication:
 computers:
   icons:
     - compact-disc
-    - database
+    - databasee
     - desktop
     - download
     - ethernet
@@ -1229,7 +1229,7 @@ interfaces:
     - cogs
     - copy
     - cut
-    - database
+    - databasee
     - dot-circle
     - download
     - edit
