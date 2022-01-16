@@ -7,6 +7,16 @@ This is a websocket chat software written using PHP and jQuery languages
 # For use
 -install composer library in project dir<br/>
 -create database table named = chitchat and table name = chat_user_table with 8 column : <br/>
-user_id , user_name , user_email , user_password , user_profile , user_created_on , user_login_status , connection_id<br/>
+<ul>
+  <li>user_id</li>
+  <li>user_name</li>
+  <li>user_email</li>
+  <li>user_password</li>
+  <li>user_profile</li>
+  <li>user_created_on</li>
+  <li>user_login_status</li>
+  <li>connection_id</li>
+</ul>
+ <br/>
 -run Server.php<br/>
 -open index.php in browser<br/>
